@@ -1,0 +1,5 @@
+{
+  "API_URL": "https://your-project-name.vercel.app/api/ingest",
+  "DEVICE_INGEST_TOKEN": "replace_with_your_device_ingest_token",
+  "DEVICE_ID": "LinRASP1"
+}

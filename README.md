@@ -1,16 +1,16 @@
 # Raspberry Pi Sensor Dashboard
 
-本專案為樹莓派感測監控系統前端與 API 服務，搭配本地樹莓派電路進行資料採集，並透過 Vercel 與 Supabase 提供校內外可連線的即時監控頁面。
+本專案為樹莓派感測監控系統，整合本地樹莓派電路、Vercel API 與 Supabase，
+提供校內外皆可存取的即時監控頁面。
 
-## Project Overview
+## Features
 
-系統功能包含：
-
-- 顯示最新感測狀態
-- 顯示目前模式（`standby` / `collecting`）
-- 顯示在線狀態（`Online` / `Offline`）
+- 顯示最新裝置狀態
+- 顯示目前模式：`standby` / `collecting`
+- 顯示在線狀態：`Online` / `Offline`
 - 顯示最近 10 筆歷史紀錄
-- 由樹莓派定時上傳距離、溫度、濕度與人體偵測結果
+- 顯示距離、溫度、濕度趨勢圖
+- 支援樹莓派定時上傳感測資料
 
 ## Hardware Pins
 
@@ -34,14 +34,14 @@
 
 - `Raspberry Pi Python Script`
   - 讀取 DHT11 與 HC-SR04
-  - 將資料上傳至 `/api/ingest`
+  - 將資料送至 `/api/ingest`
 - `Vercel API`
   - 驗證 `DEVICE_INGEST_TOKEN`
   - 將資料寫入 Supabase
 - `Supabase`
   - 儲存最新狀態與歷史紀錄
 - `Vercel Frontend`
-  - 顯示即時狀態與最近資料
+  - 顯示即時狀態、趨勢圖與最近紀錄
 
 ## Database Tables
 
@@ -73,6 +73,31 @@ DEVICE_INGEST_TOKEN=your_custom_ingest_token
   - 僅供 Vercel API server-side 使用
 - `DEVICE_INGEST_TOKEN`
   - 樹莓派上傳資料到 API 時使用的驗證 token
+
+## Raspberry Pi Script
+
+Repo 內包含樹莓派端程式：
+
+- [raspberry_pi_monitor.py](/C:/Users/linch/Desktop/大學/大三/下/專題/college_project_1_front/raspberry_pi_monitor.py:1)
+
+樹莓派端設定請建立 `device_config.json`，可依下列範例填入：
+
+```json
+{
+  "API_URL": "https://your-project-name.vercel.app/api/ingest",
+  "DEVICE_INGEST_TOKEN": "your_device_ingest_token",
+  "DEVICE_ID": "LinRASP1"
+}
+```
+
+也可以直接參考 repo 內的：
+
+- `device_config.example.json`
+
+注意：
+
+- 真實的 `device_config.json` 已加入 `.gitignore`
+- 不應將真正的 token 上傳到 GitHub
 
 ## Local Development
 
@@ -135,7 +160,7 @@ Request body example:
 2. 在 Vercel 匯入 GitHub repository
 3. 設定環境變數
 4. 部署完成後取得正式網址
-5. 將樹莓派程式中的 `API_URL` 改為正式網址：
+5. 將樹莓派程式中的 `API_URL` 改為正式網址
 
 ```python
 API_URL = "https://your-project-name.vercel.app/api/ingest"
@@ -160,6 +185,6 @@ API_URL = "https://your-project-name.vercel.app/api/ingest"
 
 ## Notes
 
-- `.env.local` 已加入 `.gitignore`，不應上傳到 GitHub。
-- `SUPABASE_SECRET_KEY` 不可放在前端程式碼中。
-- `DEVICE_INGEST_TOKEN` 應與樹莓派上傳程式保持一致。
+- `.env.local` 已加入 `.gitignore`，不應上傳到 GitHub
+- `SUPABASE_SECRET_KEY` 不可放在前端程式碼中
+- `DEVICE_INGEST_TOKEN` 應與樹莓派設定保持一致
