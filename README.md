@@ -30,6 +30,17 @@
 
 `Raspberry Pi Sensors -> Raspberry Pi Python Script -> Vercel API -> Supabase -> Vercel Dashboard`
 
+### Architecture Diagram
+
+```mermaid
+flowchart LR
+    A["HC-SR04 / DHT11"] --> B["Raspberry Pi Python Script"]
+    B --> C["Vercel API<br>/api/ingest"]
+    C --> D["Supabase<br>device_status / sensor_logs"]
+    D --> E["Vercel Dashboard"]
+    E --> F["校內 / 校外使用者"]
+```
+
 各元件角色：
 
 - `Raspberry Pi Python Script`
@@ -42,6 +53,24 @@
   - 儲存最新狀態與歷史紀錄
 - `Vercel Frontend`
   - 顯示即時狀態、趨勢圖與最近紀錄
+
+## Sensor Workflow
+
+感測流程如下：
+
+```mermaid
+flowchart TD
+    A["系統啟動"] --> B["HC-SR04 定時量測距離"]
+    B --> C{"距離 < 1 公尺?"}
+    C -- "否" --> D["維持 standby"]
+    D --> B
+    C -- "是" --> E["進入 collecting"]
+    E --> F["讀取 DHT11 溫度 / 濕度"]
+    F --> G["上傳資料到 Vercel API"]
+    G --> H["Supabase 寫入最新狀態與歷史紀錄"]
+    H --> I["Dashboard 更新畫面"]
+    I --> B
+```
 
 ## Database Tables
 
