@@ -107,7 +107,7 @@ DEVICE_INGEST_TOKEN=your_custom_ingest_token
 
 Repo 內包含樹莓派端程式：
 
-- [raspberry_pi_monitor.py](/C:/Users/linch/Desktop/大學/大三/下/專題/college_project_1_front/raspberry_pi_monitor.py:1)
+- [raspberry_pi_monitor.py](raspberry_pi_monitor.py:1)
 
 樹莓派端設定請建立 `device_config.json`，可依下列範例填入：
 
