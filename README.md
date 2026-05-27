@@ -115,7 +115,7 @@ Repo 內包含樹莓派端程式：
 {
   "API_URL": "https://your-project-name.vercel.app/api/ingest",
   "DEVICE_INGEST_TOKEN": "your_device_ingest_token",
-  "DEVICE_ID": "LinRASP1"
+  "DEVICE_ID": "your_device"
 }
 ```
 
